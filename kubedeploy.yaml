@@ -1,34 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loksai-eta-deploy
+  name: kubernoorain-eta-deploy
   labels:
-    app: loksai-eta-deploy-lbl
+    app: kubernoorain-eta-deploy-lbl
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: loksai-eta-app
+      app: kubenoorain-eta-app
   template:
     metadata:
       labels:
-        app: loksai-eta-app
+        app: kubenoorain-eta-app
     spec:
       containers:
-      - name: loksai-eta-container
-        image: loksaieta/sa-mywebapp:latest
+      - name: kubenoorain-eta-container
+        image: kubenoorain/my-java-app:latest
+        volumeMounts:
+      - mountPath: /test-mnt
+        name: test-vol
         ports:
         - containerPort: 8080
+      volumes:
+      - name: test-vol
+        hostPath:
+          path: /test-vol
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: loksai-eta-np-service
+  name: kubernoorain-eta-np-service
   labels:
-    app: loksai-eta-np-app
+    app: kubernoorain-eta-np-app
 spec:
   selector:
-    app: loksai-eta-deploy-lbl
+    app: kubernoorain-eta-deploy-lbl
 
   type: NodePort
   ports:
